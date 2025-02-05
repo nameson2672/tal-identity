@@ -16,6 +16,7 @@ namespace TalIdentity.Utils
 
             var claims = new[]
             {
+                new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("id", user.Id.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.UserName),
