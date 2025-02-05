@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TalIdentity.Data;
@@ -16,6 +17,7 @@ namespace TalIdentity.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetUser(string id)
         {
             var user = await _context.Users.FindAsync(id);

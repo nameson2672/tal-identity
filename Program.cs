@@ -8,7 +8,11 @@ using TalIdentity.Data;
 using TalIdentity.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -33,6 +37,7 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
+   
 });
 
 builder.Services.AddControllers();
@@ -48,6 +53,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Please enter a valid JWT token",
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
         BearerFormat = "JWT"
     });
 
@@ -66,6 +72,9 @@ builder.Services.AddSwaggerGen(c =>
                 }
     });
 });
+
+builder.Logging.AddConsole();
+
 
 var app = builder.Build();
 

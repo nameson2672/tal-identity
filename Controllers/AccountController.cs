@@ -45,7 +45,7 @@ namespace TalIdentity.Controllers
             if (!result)
                 return ErrorResponse("Invalid credentials", 401);
 
-            var token = JwtTokenHelper.GenerateToken(user, _configuration["Jwt:Key"], int.Parse(_configuration["Jwt:ExpiryMinutes"]));
+            var token = JwtTokenHelper.GenerateToken(user, _configuration);
             return SuccessResponse(new { Token = token }, "Login successful");
         }
     }
